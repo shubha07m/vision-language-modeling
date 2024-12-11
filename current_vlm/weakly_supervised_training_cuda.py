@@ -196,13 +196,13 @@ def train_transformer(clip_model, clip_processor, caption_model, caption_tokeniz
                 'optimizer_state_dict': optimizer.state_dict(),
             }, save_path)
 
-        # Plot training loss
-        plt.plot(range(epoch + 1), epoch_losses)
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.title('Training Loss')
-        plt.savefig(f"epoch_{epoch+1}_loss.png")
-        plt.clf()
+    # Save the loss plot only once after training is complete
+    plt.plot(range(num_epochs), epoch_losses)
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title(f'Training Loss ({num_epochs} epochs)')
+    plt.savefig("training_loss_plot.png")
+    plt.clf()
 
     return clip_model, caption_model, key_frame_classifier
 
@@ -214,7 +214,7 @@ if __name__ == '__main__':
 
     # Train model
     trained_clip_model, trained_caption_model, trained_key_frame_classifier = train_transformer(
-        clip_model, clip_processor, caption_model, caption_tokenizer, key_frame_classifier, LABELS_CSV, num_epochs=20
+        clip_model, clip_processor, caption_model, caption_tokenizer, key_frame_classifier, LABELS_CSV, num_epochs=10
     )
 
     wandb.finish()
